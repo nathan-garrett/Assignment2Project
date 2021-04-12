@@ -6,6 +6,38 @@
 
 <h1>Assets</h1>
 
+
+<div class="contrainer-fuild">
+    <div class="row">
+        <form asp-action="Index">
+            <div class="col-6 mt-5">
+                <div class="input-group mx-4">
+                    <input type="text" name="SearchBy" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="btn-search">
+                    <button class="btn btn-dark" type="submit" id="button-search"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        @foreach (var asset in Model)
+        {
+            <div class="col-md-4">
+                <div class="item w-100">
+                    <div class="polaroid">
+                        <a asp-action="Delete" asp-route-id="@asset.AssetId"><i class="bi bi-x"></i></a>                       
+                        <div class="caption">@asset.AssetName <a asp-action="Edit" asp-route-id="@asset.AssetName"><i class="bi bi-gear"></i></a></div>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    </div>
+</div>
+
 <p>
     <a asp-action="Create">Create New Asset</a>
 </p>
