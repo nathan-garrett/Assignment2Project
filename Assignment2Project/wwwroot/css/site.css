@@ -18,6 +18,22 @@ a {
   border-color: #1861ac;
 }
 
+btn-float-margin {
+    float: right;
+    margin-right: 3px;
+}
+
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th {
+    border-color: transparent;
+    border-style: none;
+    border-width: 0;
+}
+
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;

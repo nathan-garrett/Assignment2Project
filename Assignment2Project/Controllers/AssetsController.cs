@@ -20,9 +20,18 @@ namespace Assignment2Project.Views
         }
 
         // GET: Assets
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchBy)
         {
-            return View(await _context.AssetsModel.ToListAsync());
+            var data = _context.AssetsModel.Where(x => x.AssetName != null);
+
+            if (!String.IsNullOrEmpty(SearchBy))
+            {
+                data = data.Where(x => x.AssetName.Contains(SearchBy));
+            }
+
+            return View(await data.ToListAsync());
+
+          //  return View(await _context.AssetsModel.ToListAsync());
         }
 
         // GET: Assets/Details/5
