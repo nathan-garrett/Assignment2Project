@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ReportManagementSystem.Models;
+using Assignment2Project.Models;
 
 namespace Assignment2Project.Data
 {
@@ -14,5 +15,6 @@ namespace Assignment2Project.Data
         {
         }
         public DbSet<AssetsModel> AssetsModel { get; set; }
+        public DbSet<Assignment2Project.Models.ReportModel> ReportModel { get; set; }
     }
 }

@@ -1,0 +1,47 @@
+﻿@model Assignment2Project.Models.ReportModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ReportModel</h4>
+<hr />
+<div class="row">
+    
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
+            <div class="form-group">
+                <label asp-for="RType" class="control-label"></label>
+                <select asp-for="RType" class="form-control" value="1">
+                    <option asp-for="RType" value="1">General</option>
+                    <option asp-for="RType" value="2">Technical</option>
+                </select>
+                <span asp-validation-for="RType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IssueDetails" class="control-label"></label>
+                <input asp-for="IssueDetails" class="form-control" />
+                <span asp-validation-for="IssueDetails" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReportDTS" class="control-label"></label>
+                <input asp-for="ReportDTS" type="datetime-local" class="form-control" />
+                <span asp-validation-for="ReportDTS" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-dark mt-3" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

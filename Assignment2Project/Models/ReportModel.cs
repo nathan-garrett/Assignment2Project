@@ -10,20 +10,20 @@ namespace Assignment2Project.Models
     public class ReportModel
     {
         [Key]
-        public int Id { get; set; }
+        public int ReportId { get; set; }
 
-        public CustomTypes ReportType { get; set; }
+        [Display(Name = "Report Type")]
+        public ReportType RType { get; set; }
 
+        [Display(Name = "Issue Details")]
         public string IssueDetails { get; set; }
 
-        public string UserOpenedTicket { get; set; }
+        //public string UserOpenedTicket { get; set; }
 
-        public List<AssetsModel> Asset { get; set; }
-
+        // public List<AssetsModel> Asset { get; set; }
+         
+        [Display(Name = "Date/Time")]        
         public DateTime ReportDTS { get; set; }
-
-
-
-
+                
     }
 }
