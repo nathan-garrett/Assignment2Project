@@ -3,18 +3,17 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using ReportManagementSystem.Models;
 using Assignment2Project.Models;
 
 namespace Assignment2Project.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-        public DbSet<AssetsModel> AssetsModel { get; set; }
-        public DbSet<Assignment2Project.Models.ReportModel> ReportModel { get; set; }
+        public DbSet<AssetsModel> Assets { get; set; }
+        public DbSet<ReportModel> Reports { get; set; }
     }
 }

@@ -10,5 +10,13 @@ namespace Assignment2Project.Models
             General = 1,
             Technical = 2
         }
-  
+
+        public enum UserType
+        {
+            IT_Manager = 1,
+            IT_Support = 2,
+            Staff = 3,
+            Student = 4
+        }
+
 }

@@ -8,21 +8,27 @@ using Microsoft.EntityFrameworkCore;
 using Assignment2Project.Data;
 using Assignment2Project.Models;
 
+
 namespace Assignment2Project.Views
 {
     public class ReportController : Controller
     {
         private readonly ApplicationDbContext _context;
+        
 
         public ReportController(ApplicationDbContext context)
         {
             _context = context;
+            
+          
         }
 
         // GET: Report
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ReportModel.ToListAsync());
+            
+
+            return View(await _context.Reports.ToListAsync());
         }
 
         // GET: Report/Details/5
@@ -33,7 +39,7 @@ namespace Assignment2Project.Views
                 return NotFound();
             }
 
-            var reportModel = await _context.ReportModel
+            var reportModel = await _context.Reports
                 .FirstOrDefaultAsync(m => m.ReportId == id);
             if (reportModel == null)
             {
@@ -46,6 +52,8 @@ namespace Assignment2Project.Views
         // GET: Report/Create
         public IActionResult Create()
         {
+           
+
             return View();
         }
 
@@ -54,13 +62,14 @@ namespace Assignment2Project.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReportId,RType,IssueDetails,ReportDTS")] ReportModel reportModel)
+        public async Task<IActionResult> Create([Bind("ReportId,RType,IssueDetails,ReportDTS,ReportAsset")] ReportModel reportModel)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(reportModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
             }
             return View(reportModel);
         }
@@ -73,7 +82,7 @@ namespace Assignment2Project.Views
                 return NotFound();
             }
 
-            var reportModel = await _context.ReportModel.FindAsync(id);
+            var reportModel = await _context.Reports.FindAsync(id);
             if (reportModel == null)
             {
                 return NotFound();
@@ -86,7 +95,7 @@ namespace Assignment2Project.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReportId,RType,IssueDetails,ReportDTS")] ReportModel reportModel)
+        public async Task<IActionResult> Edit(int id, [Bind("ReportId,RType,IssueDetails,ReportDTS,ReportAsset")] ReportModel reportModel)
         {
             if (id != reportModel.ReportId)
             {
@@ -124,7 +133,7 @@ namespace Assignment2Project.Views
                 return NotFound();
             }
 
-            var reportModel = await _context.ReportModel
+            var reportModel = await _context.Reports
                 .FirstOrDefaultAsync(m => m.ReportId == id);
             if (reportModel == null)
             {
@@ -139,15 +148,35 @@ namespace Assignment2Project.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var reportModel = await _context.ReportModel.FindAsync(id);
-            _context.ReportModel.Remove(reportModel);
+            var reportModel = await _context.Reports.FindAsync(id);
+            _context.Reports.Remove(reportModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ReportModelExists(int id)
         {
-            return _context.ReportModel.Any(e => e.ReportId == id);
+            return _context.Reports.Any(e => e.ReportId == id);
         }
+
+    //[HttpPost, ActionName("Asset")]
+   // [ValidateAntiForgeryToken]
+   // public async Task<IActionResult> Asset(string name, int id)
+  // {
+   //        // var reportAssets = await _context.Assets.
+                          
+
+       
+        
+
+
+    //    await _context.SaveChangesAsync();
+
+    //    return RedirectToAction(nameof(Create), new { id = id });
+            
+ //   }
+
+       
     }
+   
 }

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assignment2Project.Data;
-using ReportManagementSystem.Models;
+using Assignment2Project.Models;
 
 namespace Assignment2Project.Views
 {
@@ -22,7 +20,7 @@ namespace Assignment2Project.Views
         // GET: Assets
         public async Task<IActionResult> Index(string SearchBy)
         {
-            var data = _context.AssetsModel.Where(x => x.AssetName != null);
+            var data = _context.Assets.Where(x => x.AssetName != null);
 
             if (!String.IsNullOrEmpty(SearchBy))
             {
@@ -42,7 +40,7 @@ namespace Assignment2Project.Views
                 return NotFound();
             }
 
-            var assetsModel = await _context.AssetsModel
+            var assetsModel = await _context.Assets
                 .FirstOrDefaultAsync(m => m.AssetId == id);
             if (assetsModel == null)
             {
@@ -82,7 +80,7 @@ namespace Assignment2Project.Views
                 return NotFound();
             }
 
-            var assetsModel = await _context.AssetsModel.FindAsync(id);
+            var assetsModel = await _context.Assets.FindAsync(id);
             if (assetsModel == null)
             {
                 return NotFound();
@@ -133,7 +131,7 @@ namespace Assignment2Project.Views
                 return NotFound();
             }
 
-            var assetsModel = await _context.AssetsModel
+            var assetsModel = await _context.Assets
                 .FirstOrDefaultAsync(m => m.AssetId == id);
             if (assetsModel == null)
             {
@@ -148,15 +146,15 @@ namespace Assignment2Project.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var assetsModel = await _context.AssetsModel.FindAsync(id);
-            _context.AssetsModel.Remove(assetsModel);
+            var assetsModel = await _context.Assets.FindAsync(id);
+            _context.Assets.Remove(assetsModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AssetsModelExists(int id)
         {
-            return _context.AssetsModel.Any(e => e.AssetId == id);
+            return _context.Assets.Any(e => e.AssetId == id);
         }
     }
 }

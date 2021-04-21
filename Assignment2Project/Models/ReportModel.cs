@@ -1,5 +1,4 @@
-﻿using ReportManagementSystem.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,14 +15,13 @@ namespace Assignment2Project.Models
         public ReportType RType { get; set; }
 
         [Display(Name = "Issue Details")]
-        public string IssueDetails { get; set; }
+        public string IssueDetails { get; set; }       
+        public string ReportAsset { get; set; }          
 
-        //public string UserOpenedTicket { get; set; }
-
-        // public List<AssetsModel> Asset { get; set; }
-         
         [Display(Name = "Date/Time")]        
         public DateTime ReportDTS { get; set; }
+
+       
                 
     }
 }
