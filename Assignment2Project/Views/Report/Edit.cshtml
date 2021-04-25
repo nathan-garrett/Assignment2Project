@@ -1,42 +1,61 @@
-﻿@model Assignment2Project.Models.ReportModel
+﻿@model Assignment2Project.ViewModel.ReportViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Update Report</h1>
 
-<h4>ReportModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ReportId" />
+            <input type="hidden" asp-for="Report.ReportId" />
             <div class="form-group">
-                <label asp-for="RType" class="control-label"></label>
-                <select asp-for="RType" class="form-control"></select>
-                <span asp-validation-for="RType" class="text-danger"></span>
+                <label asp-for="Report.RType" class="control-label"></label>
+                <select asp-for="Report.RType" class="form-control" value="Rtype">
+                    <option asp-for="RType" value="1">General</option>
+                    <option asp-for="RType" value="2">Technical</option>
+                </select>
+                <span asp-validation-for="Report.RType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IssueDetails" class="control-label"></label>
-                <input asp-for="IssueDetails" class="form-control" />
-                <span asp-validation-for="IssueDetails" class="text-danger"></span>
+                <label asp-for="Report.IssueDetails" class="control-label"></label>
+                <input asp-for="Report.IssueDetails" class="form-control" />
+                <span asp-validation-for="Report.IssueDetails" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ReportDTS" class="control-label"></label>
-                <input asp-for="ReportDTS" class="form-control" />
-                <span asp-validation-for="ReportDTS" class="text-danger"></span>
+                <label asp-for="Report.Asset" class="control-label"></label>
+                @Html.DropDownListFor(m => m.Report.AssetId, Model.AssetList, "Select a Asset", new { @class = "form-select" })
+                <span asp-validation-for="Report.AssetId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="hidden" asp-for="Report.ReportDTS" class="form-control" />
             </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Report.CreatedByUserEmail" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Report.Status" class="control-label"></label>
+                <select asp-for="Report.Status" class="form-control" value="Status">
+                    <option asp-for="Report.Status" value="1">Open</option>
+                    <option asp-for="Report.Status" value="2">Closed</option>
+                </select>
+                <span asp-validation-for="Report.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-dark mt-3" />
+            </div>
+
+
         </form>
     </div>
 </div>
 
+
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-dark mt-3" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

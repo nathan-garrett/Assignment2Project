@@ -22,10 +22,10 @@ namespace Assignment2Project.Controllers
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();
-            var userRolesViewModel = new List<UserRolesViewModel>();
+            var userRolesViewModel = new List<UserRolesModel>();
             foreach (ApplicationUserModel user in users)
             {
-                var thisViewModel = new UserRolesViewModel();
+                var thisViewModel = new UserRolesModel();
                 thisViewModel.UserId = user.Id;
                 thisViewModel.Email = user.Email;
                 thisViewModel.FirstName = user.FirstName;
@@ -49,10 +49,10 @@ namespace Assignment2Project.Controllers
                 return View("NotFound");
             }
             ViewBag.UserName = user.UserName;
-            var model = new List<ManageUserRolesViewModel>();
+            var model = new List<ManageUserRolesModel>();
             foreach (var role in _roleManager.Roles)
             {
-                var userRolesViewModel = new ManageUserRolesViewModel
+                var userRolesViewModel = new ManageUserRolesModel
                 {
                     RoleId = role.Id,
                     RoleName = role.Name
@@ -70,7 +70,7 @@ namespace Assignment2Project.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, string userId)
+        public async Task<IActionResult> Manage(List<ManageUserRolesModel> model, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Assignment2Project.Data;
 using Assignment2Project.Models;
 using Assignment2Project.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Assignment2Project.Views
 {
@@ -22,11 +23,17 @@ namespace Assignment2Project.Views
             
           
         }
-
+        
         // GET: Report
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchBy)
         {
-            var data = _context.Reports;
+            var data = _context.Reports.Where(x => x.CreatedByUserEmail != null);
+            if (!String.IsNullOrEmpty(SearchBy))
+            {
+                ViewData["Search"] = SearchBy;
+                data = data.Where(x => x.CreatedByUserEmail.Contains(SearchBy));
+            }
+            
 
             List<ReportModel> reports = await data.ToListAsync();
 
@@ -81,7 +88,12 @@ namespace Assignment2Project.Views
         {
             if (ModelState.IsValid)
             {
-                _context.Add(reportViewModel);
+                DateTime datetime = DateTime.Now;
+
+                reportViewModel.Report.CreatedByUserEmail = User.Identity.Name;
+                reportViewModel.Report.ReportDTS = datetime;
+                reportViewModel.Report.Status = TicketStatus.Open;
+                _context.Add(reportViewModel.Report);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
 
@@ -92,17 +104,28 @@ namespace Assignment2Project.Views
         // GET: Report/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ReportViewModel reportVM = new ReportViewModel()
+            {
+                Report = new ReportModel(),
+                AssetList = _context.Assets.Select(i => new SelectListItem
+                {
+                    Text = i.AssetName,
+                    Value = i.AssetId.ToString()
+                })
+            };
+            
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var reportModel = await _context.Reports.FindAsync(id);
-            if (reportModel == null)
+            reportVM.Report = await _context.Reports.FindAsync(id);
+            if (reportVM.Report == null)
             {
                 return NotFound();
             }
-            return View(reportModel);
+            return View(reportVM);
         }
 
         // POST: Report/Edit/5
@@ -110,9 +133,9 @@ namespace Assignment2Project.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReportId,RType,IssueDetails,ReportDTS,Asset")] ReportModel reportModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Report, AssetId")] ReportViewModel reportViewModel)
         {
-            if (id != reportModel.ReportId)
+            if (id != reportViewModel.Report.ReportId)
             {
                 return NotFound();
             }
@@ -121,12 +144,12 @@ namespace Assignment2Project.Views
             {
                 try
                 {
-                    _context.Update(reportModel);
+                    _context.Update(reportViewModel.Report);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ReportModelExists(reportModel.ReportId))
+                    if (!ReportModelExists(reportViewModel.Report.ReportId))
                     {
                         return NotFound();
                     }
@@ -137,7 +160,7 @@ namespace Assignment2Project.Views
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(reportModel);
+            return View(reportViewModel);
         }
 
         // GET: Report/Delete/5

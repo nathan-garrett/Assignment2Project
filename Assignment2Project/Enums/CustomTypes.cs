@@ -19,4 +19,10 @@ namespace Assignment2Project.Models
             Student
         }
 
+        public enum TicketStatus
+    {
+        Open = 1,
+        Closed = 2
+    }
+
 }

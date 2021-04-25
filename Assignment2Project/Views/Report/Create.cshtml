@@ -4,9 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>ReportModel</h4>
+<h1>Open a new ticket</h1>
 <hr />
 <div class="row">
 
@@ -25,12 +23,7 @@
                 <label asp-for="Report.IssueDetails" class="control-label"></label>
                 <input asp-for="Report.IssueDetails" class="form-control" />
                 <span asp-validation-for="Report.IssueDetails" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Report.ReportDTS" class="control-label"></label>
-                <input asp-for="Report.ReportDTS" type="datetime-local" class="form-control" />
-                <span asp-validation-for="Report.ReportDTS" class="text-danger"></span>
-            </div>
+            </div>         
             <div class="form-group">
                 <label asp-for="Report.Asset" class="control-label"></label>
                 @Html.DropDownListFor(m => m.Report.AssetId, Model.AssetList, "Select a Asset", new { @class = "form-select" })
@@ -42,7 +35,7 @@
 
         </form>
         <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-dark mt-3" asp-action="Index">Back to List</a>
 </div>
 
 </div>

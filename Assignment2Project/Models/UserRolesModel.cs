@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Assignment2Project.Models
 {
-    public class UserRolesViewModel
+    public class UserRolesModel
     {
         public string UserId { get; set; }
         public string FirstName { get; set; }

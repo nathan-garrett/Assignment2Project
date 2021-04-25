@@ -8,10 +8,10 @@
 <p>Create, Update and Delete Assets</p>
 
 
-<a class="btn btn-dark"  asp-controller="Asset" asp-action="Create">Create New Asset</a>
+<a class="btn btn-dark mt-3"  asp-controller="Asset" asp-action="Create">Create New Asset</a>
 
 
-<div class="contrainer-fuild mt-5">
+<div class="contrainer-fuild mt-3">
     <div class="row">
         <h2>Search for an existing Asset</h2>
         <form asp-action="Index">
@@ -39,9 +39,13 @@
                         @Html.DisplayFor(modelItem => item.AssetName)
                     </td>
                     <td>
-                        <a class="btn btn-float-margin btn-dark" asp-action="Edit" asp-route-id="@item.AssetId">Edit</a>
-                        <a class="btn btn-float-margin btn-dark" asp-action="Details" asp-route-id="@item.AssetId">Details</a>
-                        <a class="btn btn-float-margin btn-dark" asp-action="Delete" asp-route-id="@item.AssetId">Delete</a>
+                        @if (User.IsInRole("IT_Manager"))
+                        {
+
+                            <a class="btn btn-float-margin btn-dark" asp-action="Edit" asp-route-id="@item.AssetId">Edit</a>
+                            <a class="btn btn-float-margin btn-dark" asp-action="Details" asp-route-id="@item.AssetId">Details</a>
+                            <a class="btn btn-float-margin btn-dark" asp-action="Delete" asp-route-id="@item.AssetId">Delete</a>
+                        }
                     </td>
                 </tr>
             }
@@ -52,23 +56,6 @@
 
 
 
-@*<div class="container-fluid">
-    <div class="row">
-        @foreach (var asset in Model)
-        {
-            <div class="col-md-4">
-                <div class="item w-100">
-                    <div class="polaroid">
-                        <a asp-action="Delete" asp-route-id="@asset.AssetId"><i class="bi bi-x"></i></a>                       
-                        <div class="caption">@asset.AssetName <a asp-action="Edit" asp-route-id="@asset.AssetName"><i class="bi bi-gear"></i></a></div>
-                    </div>
-                </div>
-            </div>
-
-        }
-
-    </div>
-</div>*@
 
 
     

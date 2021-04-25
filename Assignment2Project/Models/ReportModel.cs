@@ -18,7 +18,6 @@ namespace Assignment2Project.Models
         [Display(Name = "Issue Details")]
         public string IssueDetails { get; set; }
 
-        [Required]
         public int AssetId { get; set; }   
         
         [ForeignKey("AssetId")]
@@ -27,7 +26,11 @@ namespace Assignment2Project.Models
         [Display(Name = "Date/Time")]        
         public DateTime ReportDTS { get; set; }
 
-        
+        [Display(Name ="Created By")]
+        [EmailAddress]
+        public string CreatedByUserEmail { get; set; }
+
+        public TicketStatus Status { get; set; }
 
     }
 }
