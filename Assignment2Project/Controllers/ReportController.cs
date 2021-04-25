@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assignment2Project.Data;
 using Assignment2Project.Models;
-
+using Assignment2Project.ViewModel;
 
 namespace Assignment2Project.Views
 {
@@ -26,9 +26,16 @@ namespace Assignment2Project.Views
         // GET: Report
         public async Task<IActionResult> Index()
         {
-            
+            var data = _context.Reports;
 
-            return View(await _context.Reports.ToListAsync());
+            List<ReportModel> reports = await data.ToListAsync();
+
+            foreach(var report in reports)
+            {
+                report.Asset = await _context.Assets.FindAsync(report.AssetId);
+            }
+
+            return View(reports);
         }
 
         // GET: Report/Details/5
@@ -52,9 +59,17 @@ namespace Assignment2Project.Views
         // GET: Report/Create
         public IActionResult Create()
         {
-           
+            ReportViewModel reportVM = new ReportViewModel()
+            {
+                Report = new ReportModel(),
+                AssetList = _context.Assets.Select(i => new SelectListItem
+                {
+                    Text = i.AssetName,
+                    Value = i.AssetId.ToString()
+                })
+            };
 
-            return View();
+            return View(reportVM);
         }
 
         // POST: Report/Create
@@ -62,16 +77,16 @@ namespace Assignment2Project.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReportId,RType,IssueDetails,ReportDTS,ReportAsset")] ReportModel reportModel)
+        public async Task<IActionResult> Create([Bind("Report, AssetId")] ReportViewModel reportViewModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(reportModel);
+                _context.Add(reportViewModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
 
             }
-            return View(reportModel);
+            return View(reportViewModel);
         }
 
         // GET: Report/Edit/5
@@ -95,7 +110,7 @@ namespace Assignment2Project.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReportId,RType,IssueDetails,ReportDTS,ReportAsset")] ReportModel reportModel)
+        public async Task<IActionResult> Edit(int id, [Bind("ReportId,RType,IssueDetails,ReportDTS,Asset")] ReportModel reportModel)
         {
             if (id != reportModel.ReportId)
             {

@@ -8,11 +8,12 @@ using Assignment2Project.Models;
 
 namespace Assignment2Project.Views
 {
-    public class AssetsController : Controller
+    [Area("IT_Manager")]
+    public class AssetController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AssetsController(ApplicationDbContext context)
+        public AssetController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -61,7 +62,7 @@ namespace Assignment2Project.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AssetId,AssetName")] AssetsModel assetsModel)
+        public async Task<IActionResult> Create([Bind("AssetId,AssetName")] AssetModel assetsModel)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +94,7 @@ namespace Assignment2Project.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AssetId,AssetName")] AssetsModel assetsModel)
+        public async Task<IActionResult> Edit(int id, [Bind("AssetId,AssetName")] AssetModel assetsModel)
         {
             if (id != assetsModel.AssetId)
             {

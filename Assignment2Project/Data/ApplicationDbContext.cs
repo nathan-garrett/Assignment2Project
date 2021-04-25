@@ -13,7 +13,8 @@ namespace Assignment2Project.Data
             : base(options)
         {
         }
-        public DbSet<AssetsModel> Assets { get; set; }
+
+        public DbSet<AssetModel> Assets { get; set; }
         public DbSet<ReportModel> Reports { get; set; }
     }
 }

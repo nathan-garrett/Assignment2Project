@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUserModel> SignInManager
+@inject UserManager<ApplicationUserModel> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,10 +28,16 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Assets" asp-action="Index">Assets</a>
+                            <a class="nav-link text-light" asp-area="IT_Manager" asp-controller="Asset" asp-action="Index">Assets</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Report" asp-action="Index">Reports</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="RoleManager" asp-action="Index">Manage Roles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="UserRoles" asp-action="Index">Assign User Roles</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -42,7 +52,6 @@
     </div>
 
     <footer class="border-top footer text-muted">
-       
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

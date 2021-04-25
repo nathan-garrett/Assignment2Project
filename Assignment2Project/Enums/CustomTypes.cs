@@ -11,12 +11,12 @@ namespace Assignment2Project.Models
             Technical = 2
         }
 
-        public enum UserType
+        public enum Roles
         {
-            IT_Manager = 1,
-            IT_Support = 2,
-            Staff = 3,
-            Student = 4
+            IT_Manager,
+            IT_Support,
+            Staff,
+            Student
         }
 
 }

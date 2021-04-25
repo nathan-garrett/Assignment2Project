@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Assignment2Project.Models
 {
-    public class AssetsModel
+    public class AssetModel
     {
         [Key]
-        [Required]
         public int AssetId { get; set; }
 
         [Required]

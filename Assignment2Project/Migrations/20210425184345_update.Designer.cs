@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment2Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210421213722_freshdatabase")]
-    partial class freshdatabase
+    [Migration("20210425184345_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -92,7 +92,7 @@ namespace Assignment2Project.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Assignment2Project.Models.AssetsModel", b =>
+            modelBuilder.Entity("Assignment2Project.Models.AssetModel", b =>
                 {
                     b.Property<int>("AssetId")
                         .ValueGeneratedOnAdd()
@@ -115,19 +115,21 @@ namespace Assignment2Project.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AssetId")
+                        .HasColumnType("int");
+
                     b.Property<string>("IssueDetails")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RType")
                         .HasColumnType("int");
 
-                    b.Property<string>("ReportAsset")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("ReportDTS")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ReportId");
+
+                    b.HasIndex("AssetId");
 
                     b.ToTable("Reports");
                 });
@@ -210,12 +212,10 @@ namespace Assignment2Project.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -252,12 +252,10 @@ namespace Assignment2Project.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -265,6 +263,17 @@ namespace Assignment2Project.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.ReportModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Models.AssetModel", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
