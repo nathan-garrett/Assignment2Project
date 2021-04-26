@@ -20,8 +20,6 @@ namespace Assignment2Project.Views
         public ReportController(ApplicationDbContext context)
         {
             _context = context;
-            
-          
         }
         
         // GET: Report
@@ -62,7 +60,7 @@ namespace Assignment2Project.Views
 
             return View(reportModel);
         }
-
+        [Authorize(Roles = "IT_Manager")]
         // GET: Report/Create
         public IActionResult Create()
         {
@@ -100,7 +98,7 @@ namespace Assignment2Project.Views
             }
             return View(reportViewModel);
         }
-
+        [Authorize(Roles = "IT_Support")]
         // GET: Report/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -162,7 +160,7 @@ namespace Assignment2Project.Views
             }
             return View(reportViewModel);
         }
-
+        [Authorize(Roles = "IT_Manager")]
         // GET: Report/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assignment2Project.Models
 {
-    public class UpdateReportModel : ReportViewModel
+    public class UpdateReportModel 
     {
         public DateTime DateTimeOfAction { get; set; }
 

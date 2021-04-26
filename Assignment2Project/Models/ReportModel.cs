@@ -30,6 +30,7 @@ namespace Assignment2Project.Models
         [EmailAddress]
         public string CreatedByUserEmail { get; set; }
 
+        
         public TicketStatus Status { get; set; }
 
     }

@@ -6,23 +6,25 @@
 }
 
 <h1>User Reports</h1>
-
-<p>
-    <a class="btn btn-dark mt-3" asp-action="Create">Create New</a>
-</p>
-<div class="contrainer-fuild mt-3">
-    <div class="row">
-        <h2>Search for an existing report</h2>
-        <form asp-action="Index">
-            <div class="col-6">
-                <div class="input-group">
-                    <input type="text" name="SearchBy" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="btn-search">
-                    <button class="btn btn-dark" type="submit" id="button-search"><i class="bi bi-search"></i></button>
+@if (User.IsInRole("IT_Support"))
+{
+    <p>
+        <a class="btn btn-dark mt-3" asp-action="Create">Create New</a>
+    </p>
+}
+    <div class="contrainer-fuild mt-3">
+        <div class="row">
+            <h2>Search for an existing report</h2>
+            <form asp-action="Index">
+                <div class="col-6">
+                    <div class="input-group">
+                        <input type="text" name="SearchBy" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="btn-search">
+                        <button class="btn btn-dark" type="submit" id="button-search"><i class="bi bi-search"></i></button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
     <table class="table mt-3">
         <thead>
             <tr>
@@ -69,9 +71,16 @@
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
                     <td>
-                        <a class="btn btn-dark" asp-action="Edit" asp-route-id="@item.ReportId">Edit</a>
+                        @if (User.IsInRole("IT_Support"))
+                        {
+                            <a class="btn btn-dark" asp-action="Edit" asp-route-id="@item.ReportId">Edit</a>
+                        }
                         <a class="btn btn-dark" asp-action="Details" asp-route-id="@item.ReportId">Details</a>
-                        <a class="btn btn-dark" asp-action="Delete" asp-route-id="@item.ReportId">Delete</a>
+                        @if (User.IsInRole("IT_Manager"))
+                        {
+                            <a class="btn btn-dark" asp-action="Delete" asp-route-id="@item.ReportId">Delete</a>
+                        }
+
                     </td>
                 </tr>
             }

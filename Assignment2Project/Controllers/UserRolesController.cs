@@ -1,4 +1,6 @@
-﻿using Assignment2Project.Models;
+﻿using Assignment2Project.Data;
+using Assignment2Project.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,16 +14,25 @@ namespace Assignment2Project.Controllers
     public class UserRolesController : Controller
     {
         private readonly UserManager<ApplicationUserModel> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;        
 
         public UserRolesController(UserManager<ApplicationUserModel> userManager, RoleManager<IdentityRole> roleManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            
         }
-        public async Task<IActionResult> Index()
+        [Authorize(Roles = "IT_Manager")]
+        public async Task<IActionResult> Index(string SearchBy)
         {
-            var users = await _userManager.Users.ToListAsync();
+            var data = _userManager.Users.Where(x => x.UserName != null);
+            if (!String.IsNullOrEmpty(SearchBy))
+            {
+                ViewData["Search"] = SearchBy;
+                data = data.Where(x => x.UserName.Contains(SearchBy) || x.FirstName.Contains(SearchBy) || x.LastName.Contains(SearchBy));
+            }
+
+            var users = await data.ToListAsync();
             var userRolesViewModel = new List<UserRolesModel>();
             foreach (ApplicationUserModel user in users)
             {
@@ -35,10 +46,12 @@ namespace Assignment2Project.Controllers
             }
             return View(userRolesViewModel);
         }
+
         private async Task<List<string>> GetUserRoles(ApplicationUserModel user)
         {
             return new List<string>(await _userManager.GetRolesAsync(user));
         }
+        [Authorize(Roles = "IT_Manager")]
         public async Task<IActionResult> Manage(string userId)
         {
             ViewBag.userId = userId;
@@ -92,5 +105,36 @@ namespace Assignment2Project.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [Authorize(Roles = "IT_Manager")]
+        //Get Delete
+        public async Task<IActionResult> Delete(string userId)
+        {
+            ViewBag.userId = userId;
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View("NotFound");
+            }          
+          
+            return View(user);
+
+
+        }
+
+
+        // POST: UserManager/Delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var data = await _userManager.FindByIdAsync(id);
+
+            await _userManager.DeleteAsync(data);
+            return RedirectToAction(nameof(Index));
+        }
+
+       
     }
 }

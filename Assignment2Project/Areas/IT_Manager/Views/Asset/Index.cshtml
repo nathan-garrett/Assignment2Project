@@ -7,56 +7,57 @@
 <h1>Assets</h1>
 <p>Create, Update and Delete Assets</p>
 
+@if (User.IsInRole("IT_Manager"))
+{
+    <a class="btn btn-dark mt-3" asp-controller="Asset" asp-action="Create">Create New Asset</a>
+}
 
-<a class="btn btn-dark mt-3"  asp-controller="Asset" asp-action="Create">Create New Asset</a>
-
-
-<div class="contrainer-fuild mt-3">
-    <div class="row">
-        <h2>Search for an existing Asset</h2>
-        <form asp-action="Index">
-            <div class="col-6">
-                <div class="input-group">
-                    <input type="text" name="SearchBy" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="btn-search">
-                    <button class="btn btn-dark" type="submit" id="button-search"><i class="bi bi-search"></i></button>
+    <div class="contrainer-fuild mt-3">
+        <div class="row">
+            <h2>Search for an existing Asset</h2>
+            <form asp-action="Index">
+                <div class="col-6">
+                    <div class="input-group">
+                        <input type="text" name="SearchBy" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="btn-search">
+                        <button class="btn btn-dark" type="submit" id="button-search"><i class="bi bi-search"></i></button>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
-    <table class="table col-6 mt-3">
-        <thead>
-            <tr>
-                <th class="border-0">
-                    Asset Name
-                </th>                
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr >
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AssetName)
-                    </td>
-                    <td>
-                        @if (User.IsInRole("IT_Manager"))
-                        {
-
-                            <a class="btn btn-float-margin btn-dark" asp-action="Edit" asp-route-id="@item.AssetId">Edit</a>
-                            <a class="btn btn-float-margin btn-dark" asp-action="Details" asp-route-id="@item.AssetId">Details</a>
-                            <a class="btn btn-float-margin btn-dark" asp-action="Delete" asp-route-id="@item.AssetId">Delete</a>
-                        }
-                    </td>
+            </form>
+        </div>
+        <table class="table col-6 mt-3">
+            <thead>
+                <tr>
+                    <th class="border-0">
+                        Asset Name
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AssetName)
+                        </td>
+                        <td>
+                            @if (User.IsInRole("IT_Manager"))
+                            {
 
-</div>
+                                <a class="btn btn-float-margin btn-dark" asp-action="Edit" asp-route-id="@item.AssetId">Edit</a>
+                                <a class="btn btn-float-margin btn-dark" asp-action="Details" asp-route-id="@item.AssetId">Details</a>
+                                <a class="btn btn-float-margin btn-dark" asp-action="Delete" asp-route-id="@item.AssetId">Delete</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
 
 
 
 
 
-    
+
 

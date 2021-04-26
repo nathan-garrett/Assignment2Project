@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Assignment2Project.Data;
 using Assignment2Project.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Assignment2Project.Views
 {
@@ -17,7 +18,7 @@ namespace Assignment2Project.Views
         {
             _context = context;
         }
-
+        
         // GET: Assets
         public async Task<IActionResult> Index(string SearchBy)
         {
@@ -50,7 +51,8 @@ namespace Assignment2Project.Views
 
             return View(assetsModel);
         }
-
+        [Authorize("IT_Manager")]
+                        
         // GET: Assets/Create
         public IActionResult Create()
         {
@@ -72,7 +74,7 @@ namespace Assignment2Project.Views
             }
             return View(assetsModel);
         }
-
+        [Authorize("IT_Manager")]
         // GET: Assets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -123,7 +125,7 @@ namespace Assignment2Project.Views
             }
             return View(assetsModel);
         }
-
+        [Authorize("IT_Manager")]
         // GET: Assets/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
