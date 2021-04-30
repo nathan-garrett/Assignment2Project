@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment2Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210425184345_update")]
-    partial class update
+    [Migration("20210426225522_newmigration")]
+    partial class newmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -118,6 +118,9 @@ namespace Assignment2Project.Migrations
                     b.Property<int>("AssetId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CreatedByUserEmail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("IssueDetails")
                         .HasColumnType("nvarchar(max)");
 
@@ -126,6 +129,12 @@ namespace Assignment2Project.Migrations
 
                     b.Property<DateTime>("ReportDTS")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WhoReportedIssue")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReportId");
 

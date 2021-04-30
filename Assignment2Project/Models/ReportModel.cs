@@ -30,8 +30,16 @@ namespace Assignment2Project.Models
         [EmailAddress]
         public string CreatedByUserEmail { get; set; }
 
-        
+        [Display(Name ="Who Reported Issue")]
+        public string WhoReportedIssue { get; set; }
+
         public TicketStatus Status { get; set; }
 
+        public List <UpdateResolutionModel> UpdateResolve { get; set; }
+
+        public ReportModel()
+        {
+            UpdateResolve = new List<UpdateResolutionModel>();
+        }
     }
 }

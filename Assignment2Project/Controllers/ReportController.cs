@@ -64,13 +64,20 @@ namespace Assignment2Project.Views
         // GET: Report/Create
         public IActionResult Create()
         {
+       
             ReportViewModel reportVM = new ReportViewModel()
             {
                 Report = new ReportModel(),
+
                 AssetList = _context.Assets.Select(i => new SelectListItem
                 {
                     Text = i.AssetName,
                     Value = i.AssetId.ToString()
+                }),
+                PersonList = _context.Users.Select(y => new SelectListItem
+                {
+                    Text = y.UserName,
+                    Value = y.UserName
                 })
             };
 

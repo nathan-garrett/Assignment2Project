@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Assignment2Project.Migrations
 {
-    public partial class init : Migration
+    public partial class newmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -176,7 +176,10 @@ namespace Assignment2Project.Migrations
                     RType = table.Column<int>(type: "int", nullable: false),
                     IssueDetails = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssetId = table.Column<int>(type: "int", nullable: false),
-                    ReportDTS = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ReportDTS = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedByUserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WhoReportedIssue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

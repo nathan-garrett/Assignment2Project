@@ -47,7 +47,7 @@ namespace Assignment2Project.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [Display(Name = "First Name")]
+            [Display(Name = "First Name")] // Added new properties to the input model
             public string FirstName { get; set; }
             [Required]
             [Display(Name = "Last Name")]
@@ -107,7 +107,7 @@ namespace Assignment2Project.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        //await _signInManager.SignInAsync(user, isPersistent: false); // Disabled automatic sign if a newly account is registered
                         return LocalRedirect(returnUrl);
                     }
                 }

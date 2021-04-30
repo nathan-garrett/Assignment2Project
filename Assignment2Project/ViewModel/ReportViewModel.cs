@@ -12,5 +12,8 @@ namespace Assignment2Project.ViewModel
         public ReportModel Report { get; set; }
 
         public IEnumerable<SelectListItem> AssetList { get; set; }
+
+        public IEnumerable<SelectListItem> PersonList { get; set; }
+
     }
 }

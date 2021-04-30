@@ -40,7 +40,8 @@
                 <label asp-for="Report.Status" class="control-label"></label>
                 <select asp-for="Report.Status" class="form-control" value="Status">
                     <option asp-for="Report.Status" value="1">Open</option>
-                    <option asp-for="Report.Status" value="2">Closed</option>
+                    <option asp-for="Report.Status" value="2">Updated</option>
+                    <option asp-for="Report.Status" value="3">Closed</option>
                 </select>
                 <span asp-validation-for="Report.Status" class="text-danger"></span>
             </div>

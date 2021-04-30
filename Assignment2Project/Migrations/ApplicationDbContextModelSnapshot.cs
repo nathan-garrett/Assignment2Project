@@ -131,11 +131,40 @@ namespace Assignment2Project.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("WhoReportedIssue")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ReportId");
 
                     b.HasIndex("AssetId");
 
                     b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.UpdateResolutionModel", b =>
+                {
+                    b.Property<int>("UpdateResolveId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ReportModelReportId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StaffMemberActioning")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateResolveDTS")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UpdateResolveId");
+
+                    b.HasIndex("ReportModelReportId");
+
+                    b.ToTable("UpdateResolutionModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -280,6 +309,13 @@ namespace Assignment2Project.Migrations
                     b.Navigation("Asset");
                 });
 
+            modelBuilder.Entity("Assignment2Project.Models.UpdateResolutionModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Models.ReportModel", null)
+                        .WithMany("UpdateResolve")
+                        .HasForeignKey("ReportModelReportId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -329,6 +365,11 @@ namespace Assignment2Project.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.ReportModel", b =>
+                {
+                    b.Navigation("UpdateResolve");
                 });
 #pragma warning restore 612, 618
         }

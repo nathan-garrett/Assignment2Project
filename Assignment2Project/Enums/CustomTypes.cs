@@ -22,7 +22,8 @@ namespace Assignment2Project.Models
         public enum TicketStatus
     {
         Open = 1,
-        Closed = 2
+        Updated = 2,
+        Closed = 3
     }
 
 }

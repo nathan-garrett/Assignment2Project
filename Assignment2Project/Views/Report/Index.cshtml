@@ -32,6 +32,9 @@
                     @Html.DisplayNameFor(model => model.RType)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.WhoReportedIssue)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.IssueDetails)
                 </th>
                 <th>
@@ -51,38 +54,41 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RType)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IssueDetails)
-                    </td>
-                    <th>
-                        @Html.DisplayFor(modelItem => item.Asset.AssetName)
-                    </th>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ReportDTS)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedByUserEmail)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                    <td>
-                        @if (User.IsInRole("IT_Support"))
-                        {
-                            <a class="btn btn-dark" asp-action="Edit" asp-route-id="@item.ReportId">Edit</a>
-                        }
-                        <a class="btn btn-dark" asp-action="Details" asp-route-id="@item.ReportId">Details</a>
-                        @if (User.IsInRole("IT_Manager"))
-                        {
-                            <a class="btn btn-dark" asp-action="Delete" asp-route-id="@item.ReportId">Delete</a>
-                        }
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WhoReportedIssue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IssueDetails)
+                </td>
+                <th>
+                    @Html.DisplayFor(modelItem => item.Asset.AssetName)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReportDTS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedByUserEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @if (User.IsInRole("IT_Support"))
+                    {
+                        <a class="btn btn-dark" asp-action="Edit" asp-route-id="@item.ReportId">Edit</a>
+                    }
+                    <a class="btn btn-dark" asp-action="Details" asp-route-id="@item.ReportId">Details</a>
+                    @if (User.IsInRole("IT_Manager"))
+                    {
+                        <a class="btn btn-dark" asp-action="Delete" asp-route-id="@item.ReportId">Delete</a>
+                    }
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Assignment2Project.Views
 {
-    [Area("IT_Manager")]
+    
     public class AssetController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,7 +18,7 @@ namespace Assignment2Project.Views
         {
             _context = context;
         }
-        
+        [Authorize(Roles = "IT_Support")]
         // GET: Assets
         public async Task<IActionResult> Index(string SearchBy)
         {
@@ -51,8 +51,8 @@ namespace Assignment2Project.Views
 
             return View(assetsModel);
         }
-        [Authorize("IT_Manager")]
-                        
+
+        [Authorize(Roles = "IT_Manager")]
         // GET: Assets/Create
         public IActionResult Create()
         {
@@ -74,7 +74,7 @@ namespace Assignment2Project.Views
             }
             return View(assetsModel);
         }
-        [Authorize("IT_Manager")]
+        [Authorize(Roles = "IT_Manager")]
         // GET: Assets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -125,7 +125,7 @@ namespace Assignment2Project.Views
             }
             return View(assetsModel);
         }
-        [Authorize("IT_Manager")]
+        [Authorize(Roles = "IT_Manager")]
         // GET: Assets/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -143,7 +143,7 @@ namespace Assignment2Project.Views
 
             return View(assetsModel);
         }
-
+        [Authorize(Roles = "IT_Manager")]
         // POST: Assets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
