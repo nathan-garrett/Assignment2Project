@@ -67,7 +67,7 @@ namespace Assignment2Project
             {           
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Report}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
 
                 

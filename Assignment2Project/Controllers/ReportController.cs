@@ -51,16 +51,34 @@ namespace Assignment2Project.Views
                 return NotFound();
             }
 
-            var reportModel = await _context.Reports
-                .FirstOrDefaultAsync(m => m.ReportId == id);
-            if (reportModel == null)
+            ReportViewModel reportVM = new ReportViewModel()
+            {
+                Report = new ReportModel()
+            };
+           
+            reportVM.Report = await _context.Reports.FirstOrDefaultAsync(m => m.ReportId == id);
+
+            var updateResolve = _context.UpdateResolve.Where(p => p.IssueId == id);
+
+            
+            reportVM.Report.Asset = await _context.Assets.FindAsync(reportVM.Report.AssetId);
+            
+
+            reportVM.Report.UpdateResolve = await updateResolve.OrderByDescending(c => c.UpdateResolveDTS).ToListAsync();
+
+            if (reportVM.Report == null)
             {
                 return NotFound();
             }
 
-            return View(reportModel);
+            if (reportVM == null)
+            {
+                return NotFound();
+            }
+
+            return View(reportVM);
         }
-        [Authorize(Roles = "IT_Manager")]
+        [Authorize(Roles = "IT_Support")]
         // GET: Report/Create
         public IActionResult Create()
         {
@@ -117,15 +135,18 @@ namespace Assignment2Project.Views
                     Text = i.AssetName,
                     Value = i.AssetId.ToString()
                 })
+            
             };
             
-
             if (id == null)
             {
                 return NotFound();
             }
 
-            reportVM.Report = await _context.Reports.FindAsync(id);
+            reportVM.Report = await _context.Reports.FirstOrDefaultAsync(m => m.ReportId == id);
+           
+            var updateResolve = _context.UpdateResolve.Where(p => p.IssueId == id);
+            reportVM.Report.UpdateResolve = await updateResolve.OrderByDescending(c => c.UpdateResolveDTS).ToListAsync();
             if (reportVM.Report == null)
             {
                 return NotFound();
@@ -138,8 +159,10 @@ namespace Assignment2Project.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Report, AssetId")] ReportViewModel reportViewModel)
+        public async Task<IActionResult> Edit(int? id, string updateResolveIssue, [Bind("Report, AssetId")] ReportViewModel reportViewModel)
         {
+           
+
             if (id != reportViewModel.Report.ReportId)
             {
                 return NotFound();
@@ -149,6 +172,18 @@ namespace Assignment2Project.Views
             {
                 try
                 {
+                    if(updateResolveIssue != null )
+                    {
+                        reportViewModel.Report = await _context.Reports.FirstOrDefaultAsync(m => m.ReportId == id);
+                        UpdateResolutionModel ur = new UpdateResolutionModel();
+                        ur.Text = updateResolveIssue;
+                        ur.UpdateResolveDTS = DateTime.Now;
+                        ur.StaffMemberActioning = User.Identity.Name;
+                        ur.IssueId = (int)id;
+                        reportViewModel.Report.UpdateResolve.Add(ur);
+                    }
+                    
+                   
                     _context.Update(reportViewModel.Report);
                     await _context.SaveChangesAsync();
                 }
@@ -163,7 +198,7 @@ namespace Assignment2Project.Views
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit));
             }
             return View(reportViewModel);
         }
@@ -191,35 +226,34 @@ namespace Assignment2Project.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var reportModel = await _context.Reports.FindAsync(id);
+            var reportModel = await _context.Reports.FindAsync(id);         
+
+            var updateResolve = _context.UpdateResolve.Where(p => p.IssueId == id);
+            
+            _context.UpdateResolve.RemoveRange(updateResolve);
             _context.Reports.Remove(reportModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost, ActionName("DeleteLog")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteLogEntry(int id)
+        {
+
+            var updateResolve = await _context.UpdateResolve.FindAsync(id);    //Where(p => p.UpdateResolveId == id);
+
+            _context.UpdateResolve.Remove(updateResolve);            
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Edit));
+        }
+
+
         private bool ReportModelExists(int id)
         {
             return _context.Reports.Any(e => e.ReportId == id);
         }
-
-    //[HttpPost, ActionName("Asset")]
-   // [ValidateAntiForgeryToken]
-   // public async Task<IActionResult> Asset(string name, int id)
-  // {
-   //        // var reportAssets = await _context.Assets.
-                          
-
-       
-        
-
-
-    //    await _context.SaveChangesAsync();
-
-    //    return RedirectToAction(nameof(Create), new { id = id });
-            
- //   }
-
-       
+              
     }
    
 }

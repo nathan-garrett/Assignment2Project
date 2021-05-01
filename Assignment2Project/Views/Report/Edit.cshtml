@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Report.IssueDetails" class="control-label"></label>
-                <input asp-for="Report.IssueDetails" class="form-control" />
+                <textarea asp-for="Report.IssueDetails" placeholder="Add issue..." class="form-control"></textarea>
                 <span asp-validation-for="Report.IssueDetails" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -46,18 +46,37 @@
                 <span asp-validation-for="Report.Status" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label class="control-label">Update and Resolve</label>
+                <input name="id" value="@Model.Report.ReportId" type="hidden" />
+                <textarea class="form-control" type="text" placeholder="Add update..." name="updateResolveIssue"></textarea>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-dark mt-3" />
             </div>
-
-
         </form>
+        <div>
+            <a class="btn btn-dark mt-3" asp-action="Index">Back to List</a>
+        </div>
     </div>
+    <div class="col-md-6">
+        <h1 class="text-center mb-3">Update Log</h1>
+       @{ 
+           foreach(var update in Model.Report.UpdateResolve)
+            {
+               <div class="card mb-3">
+                   <h6 class="text-end alert-heading me-3">Date/Time: [@update.UpdateResolveDTS]</h6>
+                   <h6 class="text-end alert-heading me-3"> Updated By: @update.StaffMemberActioning</h6>
+                   <p class="mx-5">@update.Text</p>
+                   @*<a class="btn btn-dark" type="submit" asp-action="DeleteLog" asp-route-id="@update.UpdateResolveId">Delete</a>*@
+               </div>
+            }
+       }
+
+        
+    </div>
+   
 </div>
 
-
-<div>
-    <a class="btn btn-dark mt-3" asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

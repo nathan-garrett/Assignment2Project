@@ -17,6 +17,7 @@ namespace Assignment2Project.Models
 
         public DateTime UpdateResolveDTS { get; set; }
 
-        
+        public int IssueId { get; set; }
+
     }
 }
