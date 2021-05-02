@@ -1,5 +1,6 @@
 using Assignment2Project.Data;
 using Assignment2Project.Models;
+using Assignment2Project.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,12 +34,21 @@ namespace Assignment2Project
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddIdentity<ApplicationUserModel, IdentityRole>()
+            services.AddIdentity<ApplicationUserModel, IdentityRole>() 
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.ConfigureApplicationCookie(options =>  //if the user is not authenicated return this view.
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+            }
+            );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,7 +75,7 @@ namespace Assignment2Project
 
             app.UseEndpoints(endpoints =>
             {           
-                endpoints.MapControllerRoute(
+                endpoints.MapControllerRoute( //Sets the default page to Report/Index
                     name: "default",
                     pattern: "{controller=Report}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();

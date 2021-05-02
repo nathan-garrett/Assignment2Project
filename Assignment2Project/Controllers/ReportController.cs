@@ -22,25 +22,26 @@ namespace Assignment2Project.Views
             _context = context;
         }
         
+        [Authorize] //users must authorized to see this view
         // GET: Report
-        public async Task<IActionResult> Index(string SearchBy)
+        public async Task<IActionResult> Index(string SearchBy) 
         {
-            var data = _context.Reports.Where(x => x.CreatedByUserEmail != null);
-            if (!String.IsNullOrEmpty(SearchBy))
+            var data = _context.Reports.Where(x => x.CreatedByUserEmail != null); //grabs the data from the database where CreatedByUserEmail is not null
+            if (!String.IsNullOrEmpty(SearchBy)) // checks to see if SearchBy contains a search
             {
                 ViewData["Search"] = SearchBy;
-                data = data.Where(x => x.CreatedByUserEmail.Contains(SearchBy));
+                data = data.Where(x => x.CreatedByUserEmail.Contains(SearchBy)); //checks to see if CreatedByUserEmail contains any values being searched for.
             }
             
 
-            List<ReportModel> reports = await data.ToListAsync();
+            List<ReportModel> reports = await data.ToListAsync(); // adds the results to a list or ReportModel
 
             foreach(var report in reports)
             {
-                report.Asset = await _context.Assets.FindAsync(report.AssetId);
+                report.Asset = await _context.Assets.FindAsync(report.AssetId); // Adds asset data to the report list.
             }
 
-            return View(reports);
+            return View(reports); //return view
         }
 
         // GET: Report/Details/5
@@ -56,15 +57,15 @@ namespace Assignment2Project.Views
                 Report = new ReportModel()
             };
            
-            reportVM.Report = await _context.Reports.FirstOrDefaultAsync(m => m.ReportId == id);
+            reportVM.Report = await _context.Reports.FirstOrDefaultAsync(m => m.ReportId == id); //grabs the report data where the passed id is equal to the ReportId 
 
-            var updateResolve = _context.UpdateResolve.Where(p => p.IssueId == id);
+            var updateResolve = _context.UpdateResolve.Where(p => p.IssueId == id); //adds the UpdateResolve data what equals the passed id and stores it in updateResolve
 
             
-            reportVM.Report.Asset = await _context.Assets.FindAsync(reportVM.Report.AssetId);
+            reportVM.Report.Asset = await _context.Assets.FindAsync(reportVM.Report.AssetId); // finds the asset data and stores it in reportVM
             
 
-            reportVM.Report.UpdateResolve = await updateResolve.OrderByDescending(c => c.UpdateResolveDTS).ToListAsync();
+            reportVM.Report.UpdateResolve = await updateResolve.OrderByDescending(c => c.UpdateResolveDTS).ToListAsync(); //adds the store data in updateResolve to reportVM.
 
             if (reportVM.Report == null)
             {
@@ -78,16 +79,16 @@ namespace Assignment2Project.Views
 
             return View(reportVM);
         }
-        [Authorize(Roles = "IT_Support")]
+        [Authorize(Roles = "IT_Support")] //User Authenication user requires a certain role to see this view
         // GET: Report/Create
         public IActionResult Create()
         {
        
-            ReportViewModel reportVM = new ReportViewModel()
+            ReportViewModel reportVM = new ReportViewModel() // Create a new ReportViewModel
             {
-                Report = new ReportModel(),
+                Report = new ReportModel(), //Create a new ReportModel
 
-                AssetList = _context.Assets.Select(i => new SelectListItem
+                AssetList = _context.Assets.Select(i => new SelectListItem // Add assets to SelectListItem
                 {
                     Text = i.AssetName,
                     Value = i.AssetId.ToString()
@@ -111,14 +112,14 @@ namespace Assignment2Project.Views
         {
             if (ModelState.IsValid)
             {
-                DateTime datetime = DateTime.Now;
+                DateTime datetime = DateTime.Now; //set a variable to the current time and date
 
-                reportViewModel.Report.CreatedByUserEmail = User.Identity.Name;
-                reportViewModel.Report.ReportDTS = datetime;
-                reportViewModel.Report.Status = TicketStatus.Open;
-                _context.Add(reportViewModel.Report);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                reportViewModel.Report.CreatedByUserEmail = User.Identity.Name; // set CreatedByUserEmail to the currently logged in user
+                reportViewModel.Report.ReportDTS = datetime; //set ReportDTS to the current date and time
+                reportViewModel.Report.Status = TicketStatus.Open; //set Status to Open.
+                _context.Add(reportViewModel.Report); // add new data to the databse
+                await _context.SaveChangesAsync(); 
+                return RedirectToAction(nameof(Index)); //redirect to another page
 
             }
             return View(reportViewModel);
@@ -143,7 +144,7 @@ namespace Assignment2Project.Views
                 return NotFound();
             }
 
-            reportVM.Report = await _context.Reports.FirstOrDefaultAsync(m => m.ReportId == id);
+            reportVM.Report = await _context.Reports.FirstOrDefaultAsync(m => m.ReportId == id); 
            
             var updateResolve = _context.UpdateResolve.Where(p => p.IssueId == id);
             reportVM.Report.UpdateResolve = await updateResolve.OrderByDescending(c => c.UpdateResolveDTS).ToListAsync();
@@ -163,7 +164,7 @@ namespace Assignment2Project.Views
         {
            
 
-            if (id != reportViewModel.Report.ReportId)
+            if (id != reportViewModel.Report.ReportId) //Check to see if id is not found withn reportViewModel
             {
                 return NotFound();
             }
@@ -172,7 +173,7 @@ namespace Assignment2Project.Views
             {
                 try
                 {
-                    if(updateResolveIssue != null )
+                    if(updateResolveIssue != null ) // check updateResolveIssue contains data
                     {
                         reportViewModel.Report = await _context.Reports.FirstOrDefaultAsync(m => m.ReportId == id);
                         UpdateResolutionModel ur = new UpdateResolutionModel();
@@ -184,8 +185,8 @@ namespace Assignment2Project.Views
                     }
                     
                    
-                    _context.Update(reportViewModel.Report);
-                    await _context.SaveChangesAsync();
+                    _context.Update(reportViewModel.Report); //updates the database with new values
+                    await _context.SaveChangesAsync(); //saves the changes
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -230,8 +231,8 @@ namespace Assignment2Project.Views
 
             var updateResolve = _context.UpdateResolve.Where(p => p.IssueId == id);
             
-            _context.UpdateResolve.RemoveRange(updateResolve);
-            _context.Reports.Remove(reportModel);
+            _context.UpdateResolve.RemoveRange(updateResolve); // deletes store Update/Resolution comments matching the report id
+            _context.Reports.Remove(reportModel); // deletes the report matching the id.
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -247,8 +248,6 @@ namespace Assignment2Project.Views
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Edit));
         }
-
-
         private bool ReportModelExists(int id)
         {
             return _context.Reports.Any(e => e.ReportId == id);

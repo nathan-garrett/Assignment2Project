@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Assignment2Project.Models
 {
-    public class ReportModel
+    public class ReportModel //set the properties of the model
     {
         [Key]
         public int ReportId { get; set; }

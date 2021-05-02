@@ -4,13 +4,13 @@
     ViewData["Title"] = "Delete";
 }
 
+<h1>Delete Asset</h1>
+<h3>Are you sure you want to delete this asset?</h3>
+<div>
 
-<h3>Are you sure you want to delete this Asset?</h3>
-<div> 
-        
     <form asp-action="Delete">
         <input type="hidden" asp-for="AssetId" />
         <input type="submit" value="Yes" class="btn btn-success me-2" />
-        <a class="btn btn-danger"asp-action="Index">No</a>
+        <a class="btn btn-danger" asp-action="Index">No</a>
     </form>
 </div>

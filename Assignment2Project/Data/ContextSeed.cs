@@ -20,7 +20,7 @@ namespace Assignment2Project.Data
         public static async Task SeedSuperAdminAsync(UserManager<ApplicationUserModel> userManager, RoleManager<IdentityRole> roleManager)
         {
             //Seed Default User
-            var defaultUser = new ApplicationUserModel
+            var defaultUser = new ApplicationUserModel //Create a new default user and store the user information within defaultUser
             {
                 UserName= "admin@gmail.com",
                 Email = "admin@gmail.com",
@@ -29,10 +29,10 @@ namespace Assignment2Project.Data
                 EmailConfirmed = false
 
             };
-            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            if (userManager.Users.All(u => u.Id != defaultUser.Id)) //Searchs all users for the default user
             {
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
-                if (user == null)
+                if (user == null) // Creates a default user and add user roles if default user is not found.
                 {
                     await userManager.CreateAsync(defaultUser, "Password!1");
                     await userManager.AddToRoleAsync(defaultUser, Roles.IT_Manager.ToString());

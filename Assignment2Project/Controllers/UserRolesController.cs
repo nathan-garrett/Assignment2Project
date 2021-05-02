@@ -29,12 +29,12 @@ namespace Assignment2Project.Controllers
             if (!String.IsNullOrEmpty(SearchBy))
             {
                 ViewData["Search"] = SearchBy;
-                data = data.Where(x => x.UserName.Contains(SearchBy) || x.FirstName.Contains(SearchBy) || x.LastName.Contains(SearchBy));
+                data = data.Where(x => x.UserName.Contains(SearchBy) || x.FirstName.Contains(SearchBy) || x.LastName.Contains(SearchBy)); // allows users to search based on UserName, FirstName or LastName
             }
 
-            var users = await data.ToListAsync();
-            var userRolesViewModel = new List<UserRolesModel>();
-            foreach (ApplicationUserModel user in users)
+            var users = await data.ToListAsync(); // stores the user data as a list in var users
+            var userRolesViewModel = new List<UserRolesModel>(); //creates a new list of UserRolesModel
+            foreach (ApplicationUserModel user in users) //loops through the list of data and binds it to variables
             {
                 var thisViewModel = new UserRolesModel();
                 thisViewModel.UserId = user.Id;
@@ -51,6 +51,7 @@ namespace Assignment2Project.Controllers
         {
             return new List<string>(await _userManager.GetRolesAsync(user));
         }
+
         [Authorize(Roles = "IT_Manager")]
         public async Task<IActionResult> Manage(string userId)
         {
@@ -85,19 +86,19 @@ namespace Assignment2Project.Controllers
         [HttpPost]
         public async Task<IActionResult> Manage(List<ManageUserRolesModel> model, string userId)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
+            var user = await _userManager.FindByIdAsync(userId); //find the user based on userId
+            if (user == null) //if user is null return the view.
             {
                 return View();
             }
-            var roles = await _userManager.GetRolesAsync(user);
-            var result = await _userManager.RemoveFromRolesAsync(user, roles);
+            var roles = await _userManager.GetRolesAsync(user); //gets roles from the database
+            var result = await _userManager.RemoveFromRolesAsync(user, roles); //remove roles from users
             if (!result.Succeeded)
             {
                 ModelState.AddModelError("", "Cannot remove user existing roles");
                 return View(model);
             }
-            result = await _userManager.AddToRolesAsync(user, model.Where(x => x.Selected).Select(y => y.RoleName));
+            result = await _userManager.AddToRolesAsync(user, model.Where(x => x.Selected).Select(y => y.RoleName)); //add roles to users
             if (!result.Succeeded)
             {
                 ModelState.AddModelError("", "Cannot add selected roles to user");
@@ -108,7 +109,7 @@ namespace Assignment2Project.Controllers
 
         [Authorize(Roles = "IT_Manager")]
         //Get Delete
-        public async Task<IActionResult> Delete(string userId)
+        public async Task<IActionResult> Delete(string userId) //returns the delete user view using the users id
         {
             ViewBag.userId = userId;
             var user = await _userManager.FindByIdAsync(userId);
@@ -127,7 +128,7 @@ namespace Assignment2Project.Controllers
         // POST: UserManager/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(string id) //deletes the user from the database based on the users id
         {
             var data = await _userManager.FindByIdAsync(id);
 

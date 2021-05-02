@@ -6,32 +6,45 @@ using Microsoft.EntityFrameworkCore;
 using Assignment2Project.Data;
 using Assignment2Project.Models;
 using Microsoft.AspNetCore.Authorization;
+using Assignment2Project.Repository;
 
 namespace Assignment2Project.Views
 {
     
     public class AssetController : Controller
     {
+        // Commented out code used in unit testing.
+        // private readonly IUnitOfWork _unitOfWork; 
+
+        // public AssetController(IUnitOfWork unitOfWork)
+        // {
+        //   _unitOfWork = unitOfWork;
+        //  }
+
+
         private readonly ApplicationDbContext _context;
 
         public AssetController(ApplicationDbContext context)
         {
             _context = context;
         }
+              
         [Authorize(Roles = "IT_Support")]
         // GET: Assets
         public async Task<IActionResult> Index(string SearchBy)
         {
             var data = _context.Assets.Where(x => x.AssetName != null);
+           // var data = _unitOfWork.Assets.GetAll(x => x.AssetName != null);
 
             if (!String.IsNullOrEmpty(SearchBy))
             {
-                data = data.Where(x => x.AssetName.Contains(SearchBy));
+               data = data.Where(x => x.AssetName.Contains(SearchBy));
+               // data = _unitOfWork.Assets.GetAll(x => x.AssetName.Contains(SearchBy));
             }
 
+           // return View(await data);
             return View(await data.ToListAsync());
-
-          //  return View(await _context.AssetsModel.ToListAsync());
+                      
         }
 
         // GET: Assets/Details/5
@@ -109,6 +122,8 @@ namespace Assignment2Project.Views
                 {
                     _context.Update(assetsModel);
                     await _context.SaveChangesAsync();
+                  //  await _unitOfWork.Assets.Update(assetsModel);
+                 //  await _unitOfWork.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {

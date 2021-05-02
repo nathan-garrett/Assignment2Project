@@ -14,7 +14,7 @@ namespace Assignment2Project.Data
         {
         }
 
-        public DbSet<AssetModel> Assets { get; set; }
+        public DbSet<AssetModel> Assets { get; set; }  //enables querying the data and retrieve results from for assets from the database
         public DbSet<ReportModel> Reports { get; set; }
         public DbSet<UpdateResolutionModel> UpdateResolve { get; set; }
     }

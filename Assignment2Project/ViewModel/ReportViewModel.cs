@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Assignment2Project.ViewModel
 {
-    public class ReportViewModel
+    public class ReportViewModel //As views are restricted to one model, this allows mutliply models be used within one view
     {
         public ReportModel Report { get; set; }
 

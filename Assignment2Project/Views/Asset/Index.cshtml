@@ -4,17 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Assets</h1>
-<p>Create, Update and Delete Assets</p>
+<h1>Manage Assets</h1>
 
-@if (User.IsInRole("IT_Manager"))
+
+@if (User.IsInRole("IT_Manager")) @*Restricts users based on role, only IT_Managers can view this*@
 {
     <a class="btn btn-dark mt-3" asp-controller="Asset" asp-action="Create">Create New Asset</a>
 }
 
     <div class="contrainer-fuild mt-3">
         <div class="row">
-            <h2>Search for an existing Asset</h2>
+            <h4>Search for an existing asset</h4>
             <form asp-action="Index">
                 <div class="col-6">
                     <div class="input-group">
@@ -33,7 +33,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model) @*Loops through the list of assets and output each entry individually*@
                 {
                     <tr>
                         <td>
