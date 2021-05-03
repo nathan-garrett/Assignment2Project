@@ -57,29 +57,29 @@ namespace Assignment2Project.Controllers
         {
             ViewBag.userId = userId;
             var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
+            if (user == null) //if user is null return this error message and view
             {
                 ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
                 return View("NotFound");
             }
             ViewBag.UserName = user.UserName;
-            var model = new List<ManageUserRolesModel>();
-            foreach (var role in _roleManager.Roles)
+            var model = new List<ManageUserRolesModel>(); //create a new list of ManageUserRolesModel
+            foreach (var role in _roleManager.Roles) //Loops thought _roleManager
             {
-                var userRolesViewModel = new ManageUserRolesModel
+                var userRolesViewModel = new ManageUserRolesModel //create a new ManageUserRolesModel and assign vairables to the properties
                 {
                     RoleId = role.Id,
                     RoleName = role.Name
                 };
-                if (await _userManager.IsInRoleAsync(user, role.Name))
+                if (await _userManager.IsInRoleAsync(user, role.Name)) //if user is assigned a role return selected
                 {
                     userRolesViewModel.Selected = true;
                 }
-                else
+                else //else return not selected
                 {
                     userRolesViewModel.Selected = false;
                 }
-                model.Add(userRolesViewModel);
+                model.Add(userRolesViewModel); // Adds the userRolesViewModel to the model variable
             }
             return View(model);
         }
